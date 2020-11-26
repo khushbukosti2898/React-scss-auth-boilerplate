@@ -7,7 +7,7 @@
 4) scss support with folder structure  
 
 # Getting Started React Boilerplate
-Clone repository `git clone https://github.com/AvaniBataviya/react-boilerplate.git`. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Clone repository `git clone https://github.com/khushbukosti2898/React-scss-auth-boilerplate`. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
 ## Available Scripts
