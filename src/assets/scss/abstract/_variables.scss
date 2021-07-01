@@ -1,4 +1,3 @@
-$color-primary: #081993fc;
 $color-primary-dark: #010b53fc;
 
 $color-secondary: #49525f;
@@ -11,3 +10,25 @@ $color-graylight: #ebeef1;
 $color-success: #4bb08e;
 $color-black: #000;
 $color-white: #fff;
+
+$themes: (
+	'dark': (
+        base: #232323,
+        primary: #081993fc,
+	),
+	'light': (
+        base: white,
+        primary: #525677fc,
+	),
+);
+
+@each $theme-name, $colors in $themes {
+	[data-theme='#{$theme-name}'] {
+		@each $name, $color in $colors {
+			--#{$name}: #{$color};
+		}
+	}
+}
+
+$color-base: var(--base);
+$color-primary: var(--primary);

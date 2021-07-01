@@ -11,7 +11,7 @@ const Welcome = () => {
       h-100vh p-0 m-0"
     >
       <Col sm="12" md={6}>
-        <h1>Welcome,</h1>
+        <h1 className="font-weight-bold text-primary">Welcome,</h1>
         <h4 className="text-secondary">
           {userFromStorage && userFromStorage.email}
         </h4>

@@ -31,6 +31,10 @@ const Header = () => {
     history.push('/');
   };
 
+  const changeTheme = (themeColor) => {
+    document.body.setAttribute('data-theme', themeColor);
+  };
+
   return (
     <Navbar className="bg-primary" dark expand="md">
       <NavbarBrand
@@ -40,6 +44,23 @@ const Header = () => {
         <img src={logo} alt=" React Boilerplate" className="logo" />
         React Boilerplate
       </NavbarBrand>
+
+      <Nav className="ml-auto" navbar>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret>
+            Theme
+          </DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem onClick={() => changeTheme('light')}>
+              Light
+            </DropdownItem>
+            <DropdownItem onClick={() => changeTheme('dark')}>
+              Dark
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
+
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
