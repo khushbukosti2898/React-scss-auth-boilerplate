@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -6,29 +8,56 @@ import {
   Col,
   Button,
   Form,
-  FormGroup,
-  Label,
-  Input,
   Card,
   CardBody,
   CardTitle,
 } from 'reactstrap';
 import { useAuth } from '../hooks/useAuth';
-import { setItemInStorage } from '../utils/helper';
+import { checkValidation, setItemInStorage } from '../utils/helper';
+import CustomInput from '../components/common/form-controls/CustomInput';
+import ReactSelect from '../components/common/form-controls/Select';
+
+const initailValue = {
+  email: '',
+  password: '',
+  role: null,
+};
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState(initailValue);
+  const [errors, setErrors] = useState({});
 
   const history = useHistory();
   const auth = useAuth();
+
   const onLoginClick = (e) => {
     e.preventDefault();
-    auth.login();
-    setItemInStorage('user', {
+    const { email, password, role } = formData;
+    const validationError = checkValidation(errors, {
       email,
+      password,
+      role,
     });
-    history.push('/');
+    if (Object.keys(validationError).length !== 0) {
+      setErrors(validationError);
+    } else {
+      auth.login();
+      setItemInStorage('user', {
+        email,
+      });
+      history.push('/');
+    }
+  };
+
+  const onChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validationHandler = (name, error) => {
+    setErrors({
+      ...errors,
+      [name]: error,
+    });
   };
   return (
     <Container>
@@ -40,30 +69,43 @@ const Login = () => {
                 Login
               </CardTitle>
               <Form onSubmit={onLoginClick}>
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="password">Password</Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </FormGroup>
+                <CustomInput
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  label="Email"
+                  placeholder="Enter email"
+                  isRequired
+                  reqType="email"
+                  onChange={onChange}
+                  validationHandler={validationHandler}
+                  error={errors.email}
+                />
+                <CustomInput
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  label="Password"
+                  placeholder="Password"
+                  onChange={onChange}
+                  validationHandler={validationHandler}
+                  isRequired
+                  error={errors.password}
+                />
+                <ReactSelect
+                  name="role"
+                  value={formData.role}
+                  label="Role"
+                  placeholder="Role"
+                  onChange={onChange}
+                  validationHandler={validationHandler}
+                  options={[
+                    { label: 'Super Admin', value: 'superAdmin' },
+                    { label: 'Admin', value: 'admin' },
+                  ]}
+                  isRequired
+                  error={errors.role}
+                />
                 <Button color="primary">Login</Button>
               </Form>
             </CardBody>
